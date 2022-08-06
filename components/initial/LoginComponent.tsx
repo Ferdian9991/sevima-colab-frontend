@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import tw from "twin.macro";
+import { Desktop } from "../utilities/Responsive";
 
 type FormType = {
   email: string;
@@ -20,13 +21,15 @@ const LoginComponent = () => {
       <section tw="h-screen bg-white-lilac-400">
         <div tw="h-full text-gray-800">
           <div tw="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full">
-            <div tw="flex-grow-0 h-[350px] sm:h-[100%] flex-shrink-[1] md:flex-shrink-0 flex-auto w-6/12 mb-12 md:mb-0">
+            <Desktop tw="flex-grow-0 h-[350px] sm:h-[100%] flex-shrink-[1] md:flex-shrink-0 flex-auto w-6/12 mb-12 md:mb-0">
               <div tw="h-[100vh] sticky top-0 left-0 bottom-0 right-0 grid grid-cols-1 content-center">
                 <div tw="flex flex-col w-full">
-                  <div tw="block mx-auto py-20 px-14 rounded-xl"></div>
+                  <div tw="block mx-auto py-20 px-14 rounded-xl flex justify-center items-center">
+                    <img src="/images/learning.png" tw="w-[80%]"/>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Desktop>
 
             <div tw="px-6 lg:px-10 xl:px-20 w-full md:w-5/12 sm:w-5/12  mb-12 md:mb-0">
               <h2 tw="text-[35px] font-poppins text-cornflower-blue-600">
