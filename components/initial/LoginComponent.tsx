@@ -12,7 +12,6 @@ type LoginFormType = {
 type RegisterFormType = {
   email: string;
   password: string;
-  phoneNumber: string;
 };
 
 const loginState = {
@@ -23,7 +22,6 @@ const loginState = {
 const registerState = {
   email: "",
   password: "",
-  phoneNumber: "",
 };
 
 const LoginComponent = () => {
@@ -35,9 +33,11 @@ const LoginComponent = () => {
   const handleSwitchRegister = useCallback(() => {
     if (isRegister) {
       setIsRegister(false);
+      setLoginForm(loginState);
       return;
     }
     setIsRegister(true);
+    setRegisterForm(registerState);
   }, [isRegister]);
 
   return (
@@ -145,6 +145,8 @@ const loginFormComponent = (
   loginForm: LoginFormType,
   setloginForm: React.Dispatch<React.SetStateAction<LoginFormType>>
 ) => {
+  const [showPassword, setShowPassword] = useState(true);
+
   const handleLogin = useCallback(
     async (e: any): Promise<void> => {
       if (e) e.preventDefault();
@@ -154,66 +156,83 @@ const loginFormComponent = (
     [loginForm]
   );
 
+  const handleShowPassword = useCallback(() => {
+    if (showPassword) {
+      setShowPassword(false);
+      return;
+    }
+    setShowPassword(true);
+  }, [showPassword]);
+
   return (
-    <form onSubmit={handleLogin}>
-      <div tw="mb-6">
-        <input
-          value={loginForm.email || ""}
-          onChange={(e) => {
-            if (e) e.preventDefault();
-            setloginForm({
-              ...loginForm,
-              email: e.target.value,
-            });
-          }}
-          type="text"
-          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          placeholder="Email"
-          autoFocus
-          required
-        />
+    <Fragment>
+      <div tw="pb-5">
+        <h2 tw="font-medium text-[20px] font-poppins text-gray-600">
+          Login Form
+        </h2>
       </div>
-
-      <div tw="mb-6">
-        <input
-          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          placeholder="Password"
-          autoFocus
-          value={loginForm.password || ""}
-          onChange={(e) => {
-            if (e) e.preventDefault();
-            setloginForm({
-              ...loginForm,
-              password: e.target.value,
-            });
-          }}
-          required
-        />
-      </div>
-      <div tw="flex justify-between items-center mb-6">
-        <div className="group" tw="cursor-pointer">
+      <form onSubmit={handleLogin}>
+        <div tw="mb-6">
           <input
-            type="checkbox"
-            tw="appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+            value={loginForm.email || ""}
+            onChange={(e) => {
+              if (e) e.preventDefault();
+              setloginForm({
+                ...loginForm,
+                email: e.target.value,
+              });
+            }}
+            type="text"
+            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Email"
+            autoFocus
+            required
           />
-          <label tw="inline-block text-gray-800" htmlFor="exampleCheck2">
-            Lihat password
-          </label>
         </div>
-        <a href="#!" tw="text-gray-800">
-          Masuk dashboard
-        </a>
-      </div>
+        <div tw="mb-6">
+          <input
+            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Password"
+            type={showPassword ? "text" : "password"}
+            autoFocus
+            value={loginForm.password || ""}
+            onChange={(e) => {
+              if (e) e.preventDefault();
+              setloginForm({
+                ...loginForm,
+                password: e.target.value,
+              });
+            }}
+            required
+          />
+        </div>
+        <div tw="flex justify-between items-center mb-6">
+          <div className="group" tw="cursor-pointer">
+            <input
+              type="checkbox"
+              onChange={handleShowPassword}
+              checked={showPassword}
+              tw="appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+            />
+            <label tw="inline-block text-gray-800" htmlFor="exampleCheck2">
+              Lihat password
+            </label>
+          </div>
+          <a href="#!" tw="text-gray-800">
+            Masuk dashboard
+          </a>
+        </div>
 
-      <div tw="text-center lg:text-left">
-        <button
-          type="submit"
-          tw="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-        >
-          Login
-        </button>
-      </div>
-    </form>
+        <div tw="text-center lg:text-left">
+          <button
+            type="submit"
+            tw="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </Fragment>
   );
 };
 
@@ -221,92 +240,93 @@ const registerFormComponent = (
   registerForm: RegisterFormType,
   setRegisterForm: React.Dispatch<React.SetStateAction<RegisterFormType>>
 ) => {
+  const [showPassword, setShowPassword] = useState(true);
+
   const handleRegister = useCallback(
     async (e: any): Promise<void> => {
       if (e) e.preventDefault();
-      const response = await AuthServices.login(registerForm);
+      const response = await AuthServices.register(registerForm);
       console.log(response);
     },
     [registerForm]
   );
 
+  const handleShowPassword = useCallback(() => {
+    if (showPassword) {
+      setShowPassword(false);
+      return;
+    }
+    setShowPassword(true);
+  }, [showPassword]);
+
   return (
-    <form onSubmit={handleRegister}>
-      <div tw="mb-6">
-        <input
-          value={registerForm.email || ""}
-          onChange={(e) => {
-            if (e) e.preventDefault();
-            setRegisterForm({
-              ...registerForm,
-              email: e.target.value,
-            });
-          }}
-          type="text"
-          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          placeholder="Email"
-          autoFocus
-          required
-        />
+    <Fragment>
+      <div tw="pb-5">
+        <h2 tw="font-medium text-[20px] font-poppins text-gray-600">
+          Register Form
+        </h2>
       </div>
-
-      <div tw="mb-6">
-        <input
-          value={registerForm.phoneNumber || ""}
-          onChange={(e) => {
-            if (e) e.preventDefault();
-            setRegisterForm({
-              ...registerForm,
-              phoneNumber: e.target.value,
-            });
-          }}
-          type="text"
-          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          placeholder="Email"
-          autoFocus
-          required
-        />
-      </div>
-
-      <div tw="mb-6">
-        <input
-          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          placeholder="Password"
-          autoFocus
-          value={registerForm.password || ""}
-          onChange={(e) => {
-            if (e) e.preventDefault();
-            setRegisterForm({
-              ...registerForm,
-              password: e.target.value,
-            });
-          }}
-          required
-        />
-      </div>
-      <div tw="flex justify-between items-center mb-6">
-        <div className="group" tw="cursor-pointer">
+      <form onSubmit={handleRegister}>
+        <div tw="mb-6">
           <input
-            type="checkbox"
-            tw="appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+            value={registerForm.email || ""}
+            onChange={(e) => {
+              if (e) e.preventDefault();
+              setRegisterForm({
+                ...registerForm,
+                email: e.target.value,
+              });
+            }}
+            type="text"
+            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Email"
+            autoFocus
+            required
           />
-          <label tw="inline-block text-gray-800" htmlFor="exampleCheck2">
-            Lihat password
-          </label>
         </div>
-        <a href="#!" tw="text-gray-800">
-          Masuk dashboard
-        </a>
-      </div>
+        <div tw="mb-6">
+          <input
+            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Password"
+            type={showPassword ? "text" : "password"}
+            autoFocus
+            value={registerForm.password || ""}
+            onChange={(e) => {
+              if (e) e.preventDefault();
+              setRegisterForm({
+                ...registerForm,
+                password: e.target.value,
+              });
+            }}
+            required
+          />
+        </div>
+        <div tw="flex justify-between items-center mb-6">
+          <div className="group" tw="cursor-pointer">
+            <input
+              type="checkbox"
+              onChange={handleShowPassword}
+              checked={showPassword}
+              tw="appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+            />
+            <label tw="inline-block text-gray-800" htmlFor="exampleCheck2">
+              Lihat password
+            </label>
+          </div>
+          <a href="#!" tw="text-gray-800">
+            Daftar Dashboard
+          </a>
+        </div>
 
-      <div tw="text-center lg:text-left">
-        <button
-          type="submit"
-          tw="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-        >
-          Register
-        </button>
-      </div>
-    </form>
+        <div tw="text-center lg:text-left">
+          <button
+            type="submit"
+            tw="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+          >
+            Register
+          </button>
+        </div>
+      </form>
+    </Fragment>
   );
 };
