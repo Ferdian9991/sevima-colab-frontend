@@ -1,14 +1,12 @@
 import axiosInstance from "./httpClientService";
+import { AxiosInstance } from "axios";
 
 class BaseService {
   public endPoint: string;
-  private http: any;
+  private http: AxiosInstance;
 
   constructor() {
     this.endPoint = "";
-    this.setBaseUrl();
-  }
-  setBaseUrl() {
     this.http = axiosInstance;
   }
 
