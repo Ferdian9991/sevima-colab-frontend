@@ -1,9 +1,20 @@
 import React, { Fragment, useEffect, useState } from "react";
-import tw from "twin.macro";
 import axios from "axios";
+import tw from "twin.macro";
+
+type FormType = {
+  email: string;
+  password: string;
+};
+
+const FormData = {
+  email: "",
+  password: "",
+};
 
 const LoginComponent = () => {
-  const [formData, setFormData]: any = useState({});
+  const [formData, setFormData] = useState<FormType>(FormData);
+
   return (
     <Fragment>
       <section tw="h-screen bg-white-lilac-400">
@@ -19,7 +30,7 @@ const LoginComponent = () => {
 
             <div tw="px-6 lg:px-10 xl:px-20 w-full md:w-5/12 sm:w-5/12  mb-12 md:mb-0">
               <h2 tw="text-[35px] font-poppins text-cornflower-blue-600">
-                USchool
+                Sevima Collab
               </h2>
               <div tw="flex flex-row items-center justify-center lg:justify-start">
                 <p tw="text-lg mb-0 mr-4">Masuk dengan platform</p>
