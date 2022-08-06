@@ -1,7 +1,7 @@
 import axiosInstance from "./httpClientService";
 
 class BaseService {
-  private endPoint: string;
+  public endPoint: string;
   private http: any;
 
   constructor() {

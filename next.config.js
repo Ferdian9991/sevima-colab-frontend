@@ -16,6 +16,9 @@ const nextConfig = withBundleAnalyzer({
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  env: {
+    API_URL: "http://localhost:8000/api",
+  },
   compilerOptions: {
     jsxImportSource: "preact",
   },
