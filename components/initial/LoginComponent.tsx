@@ -4,9 +4,15 @@ import tw from "twin.macro";
 import AuthServices from "../../services/AuthServices";
 import { Desktop } from "../utilities/Responsive";
 
-type FormType = {
+type LoginFormType = {
   email: string;
   password: string;
+};
+
+type RegisterFormType = {
+  email: string;
+  password: string;
+  phoneNumber: string;
 };
 
 const loginState = {
@@ -14,9 +20,25 @@ const loginState = {
   password: "",
 };
 
+const registerState = {
+  email: "",
+  password: "",
+  phoneNumber: "",
+};
+
 const LoginComponent = () => {
-  const [loginForm, setLoginForm] = useState<FormType>(loginState);
-  console.log(loginForm);
+  const [loginForm, setLoginForm] = useState<LoginFormType>(loginState);
+  const [registerForm, setRegisterForm] =
+    useState<RegisterFormType>(registerState);
+  const [isRegister, setIsRegister] = useState(false);
+
+  const handleSwitchRegister = useCallback(() => {
+    if (isRegister) {
+      setIsRegister(false);
+      return;
+    }
+    setIsRegister(true);
+  }, [isRegister]);
 
   return (
     <Fragment>
@@ -97,14 +119,16 @@ const LoginComponent = () => {
               <div tw="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
                 <p tw="text-center font-semibold mx-4 mb-0">Or</p>
               </div>
-              {loginFormComponent(loginForm, setLoginForm)}
+              {!isRegister
+                ? loginFormComponent(loginForm, setLoginForm)
+                : registerFormComponent(registerForm, setRegisterForm)}
               <p tw="text-sm font-semibold mt-2 pt-1 mb-0">
                 Tidak mempunyai akun?
                 <button
-                  onClick={(e) => {}}
+                  onClick={handleSwitchRegister}
                   tw="text-red-600 hover:text-red-700 cursor-pointer focus:text-red-700 transition duration-200 ease-in-out ml-2"
                 >
-                  Daftar Sekarang
+                  {isRegister ? "Masuk ke Dashboard" : "Daftar Sekarang"}
                 </button>
               </p>
             </div>
@@ -118,8 +142,8 @@ const LoginComponent = () => {
 export default LoginComponent;
 
 const loginFormComponent = (
-  loginForm: FormType,
-  setloginForm: React.Dispatch<React.SetStateAction<FormType>>
+  loginForm: LoginFormType,
+  setloginForm: React.Dispatch<React.SetStateAction<LoginFormType>>
 ) => {
   const handleLogin = useCallback(
     async (e: any): Promise<void> => {
@@ -187,6 +211,100 @@ const loginFormComponent = (
           tw="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
         >
           Login
+        </button>
+      </div>
+    </form>
+  );
+};
+
+const registerFormComponent = (
+  registerForm: RegisterFormType,
+  setRegisterForm: React.Dispatch<React.SetStateAction<RegisterFormType>>
+) => {
+  const handleRegister = useCallback(
+    async (e: any): Promise<void> => {
+      if (e) e.preventDefault();
+      const response = await AuthServices.login(registerForm);
+      console.log(response);
+    },
+    [registerForm]
+  );
+
+  return (
+    <form onSubmit={handleRegister}>
+      <div tw="mb-6">
+        <input
+          value={registerForm.email || ""}
+          onChange={(e) => {
+            if (e) e.preventDefault();
+            setRegisterForm({
+              ...registerForm,
+              email: e.target.value,
+            });
+          }}
+          type="text"
+          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          placeholder="Email"
+          autoFocus
+          required
+        />
+      </div>
+
+      <div tw="mb-6">
+        <input
+          value={registerForm.phoneNumber || ""}
+          onChange={(e) => {
+            if (e) e.preventDefault();
+            setRegisterForm({
+              ...registerForm,
+              phoneNumber: e.target.value,
+            });
+          }}
+          type="text"
+          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          placeholder="Email"
+          autoFocus
+          required
+        />
+      </div>
+
+      <div tw="mb-6">
+        <input
+          tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          placeholder="Password"
+          autoFocus
+          value={registerForm.password || ""}
+          onChange={(e) => {
+            if (e) e.preventDefault();
+            setRegisterForm({
+              ...registerForm,
+              password: e.target.value,
+            });
+          }}
+          required
+        />
+      </div>
+      <div tw="flex justify-between items-center mb-6">
+        <div className="group" tw="cursor-pointer">
+          <input
+            type="checkbox"
+            tw="appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+          />
+          <label tw="inline-block text-gray-800" htmlFor="exampleCheck2">
+            Lihat password
+          </label>
+        </div>
+        <a href="#!" tw="text-gray-800">
+          Masuk dashboard
+        </a>
+      </div>
+
+      <div tw="text-center lg:text-left">
+        <button
+          type="submit"
+          tw="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+        >
+          Register
         </button>
       </div>
     </form>
