@@ -17,3 +17,5 @@ export const store = createStore(
   composeWithDevTools(applyMiddleware(thunk))
 );
 export const persistor = persistStore(store);
+
+export type AppDispatch = typeof store.dispatch

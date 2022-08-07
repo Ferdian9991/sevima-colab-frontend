@@ -1,8 +1,10 @@
 import React, { Fragment, useCallback, useState } from "react";
-import axios from "axios";
 import tw from "twin.macro";
+import { useDispatch } from "react-redux";
 import AuthServices from "../../services/AuthServices";
 import { Desktop } from "../utilities/Responsive";
+import { AppDispatch } from "../../redux/store";
+import { useNotification } from "../utilities/Notification";
 
 type LoginFormType = {
   email: string;
@@ -29,6 +31,8 @@ const LoginComponent = () => {
   const [registerForm, setRegisterForm] =
     useState<RegisterFormType>(registerState);
   const [isRegister, setIsRegister] = useState(false);
+
+  const dispatch: AppDispatch = useDispatch();
 
   const handleSwitchRegister = useCallback(() => {
     if (isRegister) {
@@ -120,7 +124,7 @@ const LoginComponent = () => {
                 <p tw="text-center font-semibold mx-4 mb-0">Or</p>
               </div>
               {!isRegister
-                ? loginFormComponent(loginForm, setLoginForm)
+                ? loginFormComponent(loginForm, setLoginForm, dispatch)
                 : registerFormComponent(registerForm, setRegisterForm)}
               <p tw="text-sm font-semibold mt-2 pt-1 mb-0">
                 Tidak mempunyai akun?
@@ -143,15 +147,30 @@ export default LoginComponent;
 
 const loginFormComponent = (
   loginForm: LoginFormType,
-  setloginForm: React.Dispatch<React.SetStateAction<LoginFormType>>
+  setloginForm: React.Dispatch<React.SetStateAction<LoginFormType>>,
+  dispatch: AppDispatch
 ) => {
   const [showPassword, setShowPassword] = useState(true);
+
+  const notification = useNotification();
 
   const handleLogin = useCallback(
     async (e: any): Promise<void> => {
       if (e) e.preventDefault();
-      const response = await AuthServices.login(loginForm);
-      console.log(response);
+      try {
+        const response = await AuthServices.login(loginForm);
+        notification.showNotification({
+          message: `${response.data.message}`,
+          type: response.data.status === "error" ? "danger" : "success",
+          dismissTimeout: 3000,
+        });
+      } catch (err) {
+        notification.showNotification({
+          message: `${e.data.message}`,
+          type: "danger",
+          dismissTimeout: 3000,
+        });
+      }
     },
     [loginForm]
   );
