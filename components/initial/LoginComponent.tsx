@@ -5,6 +5,7 @@ import AuthServices from "../../services/AuthServices";
 import { Desktop } from "../utilities/Responsive";
 import { AppDispatch } from "../../redux/store";
 import { useNotification } from "../utilities/Notification";
+import { hideLoadingSpinner, showLoadingSpinner } from "../App";
 
 type LoginFormType = {
   email: string;
@@ -158,18 +159,18 @@ const loginFormComponent = (
     async (e: any): Promise<void> => {
       if (e) e.preventDefault();
       try {
+        showLoadingSpinner();
         const response = await AuthServices.login(loginForm);
         notification.showNotification({
-          message: `${response.data.message}`,
+          message: `${response.data?.message}`,
           type: response.data.status === "error" ? "danger" : "success",
           dismissTimeout: 3000,
         });
+        console.log(response);
+        hideLoadingSpinner();
       } catch (err) {
-        notification.showNotification({
-          message: `${e.data.message}`,
-          type: "danger",
-          dismissTimeout: 3000,
-        });
+        notification.handleError(err);
+        hideLoadingSpinner();
       }
     },
     [loginForm]

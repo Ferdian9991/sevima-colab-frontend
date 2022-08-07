@@ -6,6 +6,7 @@ import {
   NotificationProvider,
   NotificationContext,
 } from "./utilities/Notification";
+import LoadingSpinner from "./utilities/LoadingSpinner";
 
 Router.events.on("routeChangeStart", (url) => {
   NProgress.start();
@@ -13,6 +14,8 @@ Router.events.on("routeChangeStart", (url) => {
 
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
+
+let _loadingSpinner: any = React.createRef();
 
 interface AppProps {
   children: React.ReactNode;
@@ -54,6 +57,13 @@ const App = ({ children }: AppProps) => {
         id={appId}
       >
         {children}
+
+        <LoadingSpinner
+          visible={false}
+          ref={(comp) => {
+            _loadingSpinner = comp;
+          }}
+        />
       </motion.div>
     </NotificationProvider>
   );
@@ -62,4 +72,14 @@ export default App;
 
 export const useNotification = () => {
   return useContext<any>(NotificationContext);
+};
+
+export const showLoadingSpinner = () => {
+  if (!_loadingSpinner || !_loadingSpinner.show) return;
+  _loadingSpinner.show();
+};
+
+export const hideLoadingSpinner = () => {
+  if (!_loadingSpinner || !_loadingSpinner.show) return;
+  _loadingSpinner.hide();
 };
