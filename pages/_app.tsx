@@ -1,4 +1,5 @@
 import "../styles/tailwind.css";
+import '../public/fontawesome/css/all.min.css'
 
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
