@@ -6,6 +6,9 @@ import { Desktop } from "../utilities/Responsive";
 import { AppDispatch } from "../../redux/store";
 import { useNotification } from "../utilities/Notification";
 import { hideLoadingSpinner, showLoadingSpinner } from "../App";
+import { logIn } from "../../redux/actions/authAction";
+import { useRouter } from "next/router";
+import dashboard from "../../pages/dashboard";
 
 type LoginFormType = {
   email: string;
@@ -154,6 +157,7 @@ const loginFormComponent = (
   const [showPassword, setShowPassword] = useState(true);
 
   const notification = useNotification();
+  const router = useRouter();
 
   const handleLogin = useCallback(
     async (e: any): Promise<void> => {
@@ -163,10 +167,15 @@ const loginFormComponent = (
         const response = await AuthServices.login(loginForm);
         notification.showNotification({
           message: `${response.data?.message}`,
-          type: response.data.status === "error" ? "danger" : "success",
+          type:
+            response.data.status === "error" ||
+            response.data?.status_code != 200
+              ? "danger"
+              : "success",
           dismissTimeout: 3000,
         });
-        console.log(response);
+        dispatch(logIn(loginForm, response.data));
+        router.replace("/dashboard");
         hideLoadingSpinner();
       } catch (err) {
         notification.handleError(err);

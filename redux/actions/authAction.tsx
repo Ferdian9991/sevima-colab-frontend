@@ -8,9 +8,8 @@ export const logIn =
     try {
       let maxAge = ms("1d") / 1000;
       const { data } = response;
-      const { api_token } = data;
 
-      document.cookie = cookie.serialize("api_token", api_token, {
+      document.cookie = cookie.serialize("api_token", data?.api_token || "", {
         maxAge,
         path: "/",
       });

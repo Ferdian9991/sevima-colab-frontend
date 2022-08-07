@@ -1,11 +1,14 @@
 import React from "react";
+import AuthArea from "../layout/AuthArea";
 import Layout from "../layout/Layout";
 
 const DashboardComponent = () => {
   return (
-    <Layout>
-      <div>Foo</div>
-    </Layout>
+    <AuthArea>
+      <Layout>
+        <div></div>
+      </Layout>
+    </AuthArea>
   );
 };
 

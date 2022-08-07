@@ -163,11 +163,15 @@ const menuRenderer = ({ subMenu }: { subMenu: [] }) => {
         <Link href={menu.link}>
           <div tw="block text-gray-200 hover:text-white truncate transition duration-150">
             <div tw="flex items-center">
-              <i
-                className={menu.icon}
-                tw="flex-shrink-0 w-6 text-xl"
-                css={[active ? tw`text-white` : tw`text-gray-600`]}
-              ></i>
+              <div tw="flex-shrink-0 w-6">
+                <div tw="flex justify-center items-center">
+                  <i
+                    className={menu.icon}
+                    tw="text-xl"
+                    css={[active ? tw`text-white` : tw`text-gray-600`]}
+                  />
+                </div>
+              </div>
               <span
                 className="lg:sidebar-expanded:opacity-100"
                 tw="text-sm font-medium ml-3 lg:opacity-0 2xl:opacity-100 duration-200"
