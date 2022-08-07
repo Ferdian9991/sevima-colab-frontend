@@ -107,7 +107,7 @@ const Sidebar = ({
 
         <div tw="space-y-8">
           <div>
-            <h3 tw="text-xs uppercase text-white font-semibold pl-3">
+            <h3 tw="text-xs uppercase text-gray-600 font-semibold pl-3">
               <span
                 className="lg:sidebar-expanded:hidden"
                 tw="hidden lg:block 2xl:hidden text-center w-6"
