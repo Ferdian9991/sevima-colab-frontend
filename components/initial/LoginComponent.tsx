@@ -1,6 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import React, { Fragment, useCallback, useState } from "react";
 import tw from "twin.macro";
 import { useDispatch } from "react-redux";
+import { css } from "@emotion/react";
 import AuthServices from "../../services/AuthServices";
 import { Desktop } from "../utilities/Responsive";
 import { AppDispatch } from "../../redux/store";
@@ -8,7 +10,7 @@ import { useNotification } from "../utilities/Notification";
 import { hideLoadingSpinner, showLoadingSpinner } from "../App";
 import { logIn } from "../../redux/actions/authAction";
 import { useRouter } from "next/router";
-import dashboard from "../../pages/dashboard";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 type LoginFormType = {
   email: string;
@@ -214,8 +216,8 @@ export const LoginFormComponent = ({
           Login Form
         </h2>
       </div>
-      <form onSubmit={handleLogin}>
-        <div tw="mb-6">
+      <form onSubmit={handleLogin} tw="space-y-3">
+        <div>
           <input
             value={loginForm.email || ""}
             onChange={(e) => {
@@ -226,15 +228,15 @@ export const LoginFormComponent = ({
               });
             }}
             type="text"
-            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            tw="block w-full px-4 py-1 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Email"
             autoFocus
             required
           />
         </div>
-        <div tw="mb-6">
+        <div tw="w-full flex bg-white border border-solid border-gray-300 focus:bg-white focus:border-blue-600 rounded-lg">
           <input
-            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            tw="block w-[90%] px-4 py-1 text-xl font-normal text-gray-700 bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 border-none focus:outline-none"
             placeholder="Password"
             type={showPassword ? "text" : "password"}
             autoFocus
@@ -248,17 +250,26 @@ export const LoginFormComponent = ({
             }}
             required
           />
+
+          <div
+            tw="w-[10%] flex justify-center items-center py-1 cursor-pointer hover:bg-gray-200"
+            onClick={handleShowPassword}
+          >
+            <i
+              className="fa-solid fa-eye"
+              tw="text-xl"
+              css={[showPassword ? tw`text-blue-500` : tw`text-gray-600`]}
+            />
+          </div>
         </div>
         <div tw="flex justify-between items-center mb-6">
           <div className="group" tw="cursor-pointer">
             <input
               type="checkbox"
-              onChange={handleShowPassword}
-              checked={showPassword}
               tw="appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
             />
             <label tw="inline-block text-gray-800" htmlFor="exampleCheck2">
-              Lihat password
+              Agree terms & conditions
             </label>
           </div>
           <a href="#!" tw="text-gray-800">
@@ -312,8 +323,8 @@ const RegisterFormComponent = ({
           Register Form
         </h2>
       </div>
-      <form onSubmit={handleRegister}>
-        <div tw="mb-6">
+      <form onSubmit={handleRegister} tw="space-y-3">
+        <div tw="relative">
           <input
             value={registerForm.email || ""}
             onChange={(e) => {
@@ -324,15 +335,15 @@ const RegisterFormComponent = ({
               });
             }}
             type="text"
-            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            tw="block w-full px-4 py-1 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Email"
             autoFocus
             required
           />
         </div>
-        <div tw="mb-6">
+        <div tw="w-full flex bg-white border border-solid border-gray-300 focus:bg-white focus:border-blue-600 rounded-lg">
           <input
-            tw="block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            tw="block w-[90%] px-4 py-1 text-xl font-normal text-gray-700 bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 border-none focus:outline-none"
             placeholder="Password"
             type={showPassword ? "text" : "password"}
             autoFocus
@@ -346,17 +357,37 @@ const RegisterFormComponent = ({
             }}
             required
           />
+
+          <div
+            tw="w-[10%] flex justify-center items-center py-1 cursor-pointer hover:bg-gray-200"
+            onClick={handleShowPassword}
+          >
+            <i
+              className="fa-solid fa-eye"
+              tw="text-xl"
+              css={[showPassword ? tw`text-blue-500` : tw`text-gray-600`]}
+            />
+          </div>
         </div>
+        <PasswordStrengthBar
+          password={registerForm.password}
+          shortScoreWord={"Terlalu lemah"}
+          scoreWords={[
+            "Sangat lemah",
+            "Lemah",
+            "Sedang",
+            "Kuat",
+            "Sangat kuat",
+          ]}
+        />
         <div tw="flex justify-between items-center mb-6">
           <div className="group" tw="cursor-pointer">
             <input
               type="checkbox"
-              onChange={handleShowPassword}
-              checked={showPassword}
               tw="appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
             />
             <label tw="inline-block text-gray-800" htmlFor="exampleCheck2">
-              Lihat password
+              Agree terms & conditions
             </label>
           </div>
           <a href="#!" tw="text-gray-800">
