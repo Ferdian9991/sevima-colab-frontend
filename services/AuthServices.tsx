@@ -9,6 +9,10 @@ class AuthService extends BaseService {
     this.endPoint = "/register";
     return this.post(payload);
   }
+  getPermissions(key: string, options: any) {
+    this.endPoint = `/get-permissions?key=${key}`;
+    return this.get(options);
+  }
 }
 
 export default new AuthService();

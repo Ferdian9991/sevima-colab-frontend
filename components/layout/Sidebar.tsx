@@ -49,6 +49,13 @@ const Sidebar = ({
       roles: ["Teacher", "Student", "Parent"],
       isActive: linkPathname,
     },
+    {
+      link: "/users",
+      icon: "fa-solid fa-users",
+      label: "Users",
+      roles: ["Teacher", "Student", "Parent"],
+      isActive: linkPathname,
+    },
   ];
 
   useEffect(() => {
@@ -70,7 +77,7 @@ const Sidebar = ({
   }, [sidebarExpanded]);
 
   return (
-    <div tw="px-3">
+    <div>
       <div
         id="sidebar"
         ref={sidebar}
@@ -90,7 +97,7 @@ const Sidebar = ({
           >
             <span tw="sr-only">Close sidebar</span>
             <svg
-              tw="w-6 h-6 fill-current"
+              tw="w-6 h-6 fill-current text-gray-600"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >

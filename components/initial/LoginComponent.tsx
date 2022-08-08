@@ -171,7 +171,7 @@ export const LoginFormComponent = ({
   setLoginForm: React.Dispatch<React.SetStateAction<LoginFormType>>;
   dispatch: AppDispatch;
 }) => {
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const notification = useNotification();
   const router = useRouter();
@@ -229,7 +229,7 @@ export const LoginFormComponent = ({
               });
             }}
             type="text"
-            tw="block w-full px-4 py-1 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            tw="block w-full px-4 py-1 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Email"
             autoFocus
             required
@@ -237,7 +237,7 @@ export const LoginFormComponent = ({
         </div>
         <div tw="w-full flex bg-white border border-solid border-gray-300 focus:bg-white focus:border-blue-600 rounded-lg">
           <input
-            tw="block w-[90%] px-4 py-1 text-xl font-normal text-gray-700 bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 border-none focus:outline-none"
+            tw="block w-[90%] px-4 py-1 text-lg font-normal text-gray-700 bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 border-none focus:outline-none"
             placeholder="Password"
             type={showPassword ? "text" : "password"}
             autoFocus
@@ -300,7 +300,7 @@ const RegisterFormComponent = ({
   setRegisterForm: React.Dispatch<React.SetStateAction<RegisterFormType>>;
   setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const notification = useNotification();
 
@@ -356,7 +356,7 @@ const RegisterFormComponent = ({
               });
             }}
             type="text"
-            tw="block w-full px-4 py-1 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            tw="block w-full px-4 py-1 text-lg font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Email"
             autoFocus
             required
@@ -364,7 +364,7 @@ const RegisterFormComponent = ({
         </div>
         <div tw="w-full flex bg-white border border-solid border-gray-300 focus:bg-white focus:border-blue-600 rounded-lg">
           <input
-            tw="block w-[90%] px-4 py-1 text-xl font-normal text-gray-700 bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 border-none focus:outline-none"
+            tw="block w-[90%] px-4 py-1 text-lg font-normal text-gray-700 bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 border-none focus:outline-none"
             placeholder="Password"
             type={showPassword ? "text" : "password"}
             autoFocus

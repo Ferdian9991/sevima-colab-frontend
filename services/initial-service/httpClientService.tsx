@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
 
     if (error.response.status == 401) {
       window.localStorage.clear();
-      return Router.replace("/login");
+      return Router.replace("/");
     }
     return Promise.reject(error.response);
   }

@@ -14,7 +14,7 @@ function useIsInitialRender() {
 }
 
 type TransitionTypes = {
-  show?: string;
+  show?: boolean;
   enter?: string;
   enterStart?: string;
   enterEnd?: string;
@@ -65,7 +65,7 @@ function CSSTransition({
       appear={appear}
       nodeRef={nodeRef}
       unmountOnExit={removeFromDom}
-      on={show}
+      in={show}
       addEndListener={(done: any) => {
         nodeRef.current.addEventListener("transitionend", done, false);
       }}

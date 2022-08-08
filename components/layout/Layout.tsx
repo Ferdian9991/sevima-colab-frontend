@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Head from "next/head";
-import { useSelector } from "react-redux";
 import tw from "twin.macro";
 import Sidebar from "./Sidebar";
+import Header from "./Header";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,7 +23,8 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Content area */}
         <div tw="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
           {/*  Site header */}
-          <main tw="bg-alabaster-500">
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <main tw="bg-zircon-500">
             <div tw="h-screen px-4 sm:px-6 lg:px-8 w-full max-w-9xl mx-auto relative">
               {children}
             </div>
