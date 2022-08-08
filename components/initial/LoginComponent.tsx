@@ -139,6 +139,7 @@ const LoginComponent = () => {
                 <RegisterFormComponent
                   registerForm={registerForm}
                   setRegisterForm={setRegisterForm}
+                  setIsRegister={setIsRegister}
                 />
               )}
 
@@ -183,18 +184,18 @@ export const LoginFormComponent = ({
         const response = await AuthServices.login(loginForm);
         notification.showNotification({
           message: `${response.data?.message}`,
-          type:
-            response.data.status === "error" ||
-            response.data?.status_code != 200
-              ? "danger"
-              : "success",
+          type: response.data.status,
           dismissTimeout: 3000,
         });
         dispatch(logIn(loginForm, response.data));
         router.replace("/dashboard");
         hideLoadingSpinner();
-      } catch (err) {
-        notification.handleError(err);
+      } catch (err: any) {
+        notification.showNotification({
+          message: `${err.data?.message}`,
+          type: "danger",
+          dismissTimeout: 3000,
+        });
         hideLoadingSpinner();
       }
     },
@@ -293,17 +294,37 @@ export const LoginFormComponent = ({
 const RegisterFormComponent = ({
   registerForm,
   setRegisterForm,
+  setIsRegister,
 }: {
   registerForm: RegisterFormType;
   setRegisterForm: React.Dispatch<React.SetStateAction<RegisterFormType>>;
+  setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [showPassword, setShowPassword] = useState(true);
+
+  const notification = useNotification();
 
   const handleRegister = useCallback(
     async (e: any): Promise<void> => {
       if (e) e.preventDefault();
-      const response = await AuthServices.register(registerForm);
-      console.log(response);
+      try {
+        showLoadingSpinner();
+        const response = await AuthServices.register(registerForm);
+        notification.showNotification({
+          message: `${response.data?.message}`,
+          type: response.data.status,
+          dismissTimeout: 3000,
+        });
+        setIsRegister(false);
+        hideLoadingSpinner();
+      } catch (err: any) {
+        notification.showNotification({
+          message: `${err.data?.message}`,
+          type: "danger",
+          dismissTimeout: 3000,
+        });
+        hideLoadingSpinner();
+      }
     },
     [registerForm]
   );
