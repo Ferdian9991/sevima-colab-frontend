@@ -127,9 +127,19 @@ const LoginComponent = () => {
               <div tw="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
                 <p tw="text-center font-semibold mx-4 mb-0">Or</p>
               </div>
-              {!isRegister
-                ? loginFormComponent(loginForm, setLoginForm, dispatch)
-                : registerFormComponent(registerForm, setRegisterForm)}
+              {!isRegister ? (
+                <LoginFormComponent
+                  loginForm={loginForm}
+                  setLoginForm={setLoginForm}
+                  dispatch={dispatch}
+                />
+              ) : (
+                <RegisterFormComponent
+                  registerForm={registerForm}
+                  setRegisterForm={setRegisterForm}
+                />
+              )}
+
               <p tw="text-sm font-semibold mt-2 pt-1 mb-0">
                 Tidak mempunyai akun?
                 <button
@@ -149,11 +159,15 @@ const LoginComponent = () => {
 
 export default LoginComponent;
 
-const loginFormComponent = (
-  loginForm: LoginFormType,
-  setloginForm: React.Dispatch<React.SetStateAction<LoginFormType>>,
-  dispatch: AppDispatch
-) => {
+export const LoginFormComponent = ({
+  loginForm,
+  setLoginForm,
+  dispatch,
+}: {
+  loginForm: LoginFormType;
+  setLoginForm: React.Dispatch<React.SetStateAction<LoginFormType>>;
+  dispatch: AppDispatch;
+}) => {
   const [showPassword, setShowPassword] = useState(true);
 
   const notification = useNotification();
@@ -206,7 +220,7 @@ const loginFormComponent = (
             value={loginForm.email || ""}
             onChange={(e) => {
               if (e) e.preventDefault();
-              setloginForm({
+              setLoginForm({
                 ...loginForm,
                 email: e.target.value,
               });
@@ -227,7 +241,7 @@ const loginFormComponent = (
             value={loginForm.password || ""}
             onChange={(e) => {
               if (e) e.preventDefault();
-              setloginForm({
+              setLoginForm({
                 ...loginForm,
                 password: e.target.value,
               });
@@ -265,10 +279,13 @@ const loginFormComponent = (
   );
 };
 
-const registerFormComponent = (
-  registerForm: RegisterFormType,
-  setRegisterForm: React.Dispatch<React.SetStateAction<RegisterFormType>>
-) => {
+const RegisterFormComponent = ({
+  registerForm,
+  setRegisterForm,
+}: {
+  registerForm: RegisterFormType;
+  setRegisterForm: React.Dispatch<React.SetStateAction<RegisterFormType>>;
+}) => {
   const [showPassword, setShowPassword] = useState(true);
 
   const handleRegister = useCallback(
